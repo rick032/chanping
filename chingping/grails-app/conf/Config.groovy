@@ -86,10 +86,10 @@ environments {
 log4j = {
 	// Example of changing the log pattern for the default console appender:
 	//
-	//appenders {
-	//    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-	//}
-
+	appenders {
+		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+	}
+	info 'tw.com.chanping'
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
 			'org.codehaus.groovy.grails.web.pages',          // GSP
 			'org.codehaus.groovy.grails.web.sitemesh',       // layouts
@@ -121,3 +121,4 @@ oauth {
 	receiveTimeout = 5000
 }
 grails.google.api.url = "https://www.googleapis.com/oauth2/v1/userinfo"
+DBF.url = "F:\\WorkArea\\others\\Chingping\\DATA\\"

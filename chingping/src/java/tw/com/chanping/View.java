@@ -1,4 +1,4 @@
-package tw.com.chingping;
+package tw.com.chanping;
 
 import com.google.api.services.calendar.model.Calendar;
 import com.google.api.services.calendar.model.CalendarList;

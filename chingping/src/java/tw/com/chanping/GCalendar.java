@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tw.com.chingping;
+package tw.com.chanping;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -44,7 +44,7 @@ public class GCalendar {
 	 * is {@code null} or blank, the application will log a warning. Suggested
 	 * format is "MyCompany-ProductName/1.0".
 	 */
-	private static final String APPLICATION_NAME = "";
+	private static final String APPLICATION_NAME = "chingping";
 
 	/** Directory to store user credentials. */
 	private static final java.io.File DATA_STORE_DIR = new java.io.File(
@@ -91,6 +91,28 @@ public class GCalendar {
 		// authorize
 		return new AuthorizationCodeInstalledApp(flow,
 				new LocalServerReceiver()).authorize("user");
+	}
+
+	GCalendar() {
+		try {
+			// initialize the transport
+			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+
+			// initialize the data store factory
+			dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+
+			// authorization
+			Credential credential = authorize();
+
+			// set up global Calendar instance
+			client = new com.google.api.services.calendar.Calendar.Builder(
+					httpTransport, JSON_FACTORY, credential)
+					.setApplicationName(APPLICATION_NAME).build();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
