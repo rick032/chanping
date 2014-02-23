@@ -1,6 +1,6 @@
 <html lang="cht">
 	<head>
-		<title>阡品股份有限公司</title>
+		<title>釺品股份有限公司</title>
 		<meta name="layout" content="main" />
 	</head>
 	<body>

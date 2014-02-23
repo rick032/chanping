@@ -1,53 +1,58 @@
 $(document).ready(function() {
 	var date = new Date();
 	var d = date.getDate();
-	var m = date.getMonth();
+	var m = date.getMonth() + 1;
 	var y = date.getFullYear();
 
-	$('#calendar').fullCalendar({
+	var cal = $('#calendar').fullCalendar({
 		header : {
 			left : 'prev,next today',
 			center : 'title',
 			right : 'month,agendaWeek,agendaDay'
 		},
-		editable : true,
-		weekMode : 'variable',
-		events : [ {
-			title : 'All Day Event',
-			start : new Date(y, m, 1)
-		}, {
-			title : 'Long Event',
-			start : new Date(y, m, d - 5),
-			end : new Date(y, m, d - 2)
-		}, {
-			id : 999,
-			title : 'Repeating Event',
-			start : new Date(y, m, d - 3, 16, 0),
-			allDay : false
-		}, {
-			id : 999,
-			title : 'Repeating Event',
-			start : new Date(y, m, d + 4, 16, 0),
-			allDay : false
-		}, {
-			title : 'Meeting',
-			start : new Date(y, m, d, 10, 30),
-			allDay : false
-		}, {
-			title : 'Lunch',
-			start : new Date(y, m, d, 12, 0),
-			end : new Date(y, m, d, 14, 0),
-			allDay : false
-		}, {
-			title : 'Birthday Party',
-			start : new Date(y, m, d + 1, 19, 0),
-			end : new Date(y, m, d + 1, 22, 30),
-			allDay : false
-		}, {
-			title : 'Click for Google',
-			start : new Date(y, m, 28),
-			end : new Date(y, m, 29),
-			url : 'http://google.com/'
-		} ]
+		editable : false,
+		weekMode : 'variable',		
+		events : function(start, end, timezone, callback) {			
+			$.ajax({
+				url : contextRoot + "/main/getEvents",
+				dataType : 'json',
+				data : {
+					start : start.format('YYYY,MM,DD'),
+					end : end.format('YYYY,MM,DD')
+				},
+				success : function(doc) {
+					var events = [];
+					// $(doc).find('event').each(function() {
+					$(doc).each(function() {
+						events.push({
+							id : $(this).attr('id'),
+							title : $(this).attr('title'),
+							start : new Date(Date.parse($(this).attr('start'))),
+							allDay : true
+						});
+					});
+					callback(events);
+				}
+			});
+		},
+		eventClick : function(event) {
+			$.ajax({
+				url : contextRoot + "/main/getEvent",
+				type : "POST",
+				data : {
+					'tradeno' : event.id
+				},
+				success : function(res) {
+					$("#eventdialog").fancybox({
+						openMethod : 'zoomIn',
+						afterLoad : function() {
+						}
+					}).open();
+					$("#pclose1").click(function() {
+						$.fancybox.close();
+					});
+				}
+			});
+		}
 	});
 });

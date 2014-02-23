@@ -16,12 +16,13 @@ $(document).ready(function() {
 			$('#loading').toggle(bool);
 		}
 	});
-
-	$.ajax({
-		type : "POST",
-		url : contextRoot + "/main/getCtm",
-		success : function(map) {
-			alert(map?map.ctmname:'');
-		}
-	});
+	
+	
+//	$.ajax({
+//		type : "POST",
+//		url : contextRoot + "/main/getCtm",
+//		success : function(map) {
+//			alert(map?map.ctmname:'');
+//		}
+//	});
 });

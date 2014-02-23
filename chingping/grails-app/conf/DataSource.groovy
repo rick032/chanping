@@ -14,9 +14,9 @@ environments {
     development {
         dataSource {
             //dbCreate = "update"
-            url = "jdbc:odbc:chanping"			
+            //url = "jdbc:odbc:chanping"			
 			dialect = tw.com.chanping.FoxProDialect
-			driverClassName = "sun.jdbc.odbc.JdbcOdbcDriver"
+			//driverClassName = "sun.jdbc.odbc.JdbcOdbcDriver"
         }
     }
     test {
