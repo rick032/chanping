@@ -65,7 +65,7 @@ class MainController {
 		}
 		def sql = new Sql(dataSource)
 		//sql.eachRow("SELECT * from Goods c where c.ctmno='A-001'") { c ->
-		def sqlQuery = "select c.CTMNAME,c.TEL1,c.TEL2,o.TRADENO,o.CTMNO,o.TRADEDATE,o.GOODNO,GOODNAME,TRADEQTY from opitem o LEFT JOIN ctm c on o.ctmno=c.ctmno LEFT JOIN GOODS g ON o.goodno=g.goodno "+
+		def sqlQuery = "select DISTINCT c.CTMNAME,o.TRADENO,o.TRADEDATE from opitem o LEFT JOIN ctm c on o.ctmno=c.ctmno "+
 				"where TRADEDATE between datetime("+start+") and datetime("+end+")"
 		println sqlQuery
 		def rows = sql.rows(sqlQuery)
@@ -94,17 +94,16 @@ class MainController {
 			def sql = new Sql(dataSource)
 			def rows = sql.rows("select c.CTMNAME,c.TEL1,c.TEL2,o.TRADENO,o.CTMNO,o.TRADEDATE,o.GOODNO,GOODNAME,TRADEQTY from opitem o LEFT JOIN ctm c on o.ctmno=c.ctmno LEFT JOIN GOODS g ON o.goodno=g.goodno "+
 					"where o.TRADENO='"+ tradeno +"'")
-
-
 			rows.each { c ->
 				def res = [:]
+				res['sn'] = i++
 				res['TRADEQTY'] = c.TRADEQTY
-				res['GOODNO'] = c.GOODNO
-				res['GOODNAME'] = c.GOODNAME
-				responList.add(res)
+				res['GOODNO'] = c.GOODNO?.trim()
+				res['GOODNAME'] = c.GOODNAME?.trim()
+				responList.add res
 			}
 			sql.close()
 		}
-		return [opitems:responList]
+		render responList as JSON
 	}
 }

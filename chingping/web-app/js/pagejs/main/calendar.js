@@ -1,8 +1,5 @@
 $(document).ready(function() {
-	var date = new Date();
-	var d = date.getDate();
-	var m = date.getMonth() + 1;
-	var y = date.getFullYear();
+	var eventDialog = $("#eventdialog");
 
 	var cal = $('#calendar').fullCalendar({
 		header : {
@@ -11,8 +8,8 @@ $(document).ready(function() {
 			right : 'month,agendaWeek,agendaDay'
 		},
 		editable : false,
-		weekMode : 'variable',		
-		events : function(start, end, timezone, callback) {			
+		weekMode : 'variable',
+		events : function(start, end, timezone, callback) {
 			$.ajax({
 				url : contextRoot + "/main/getEvents",
 				dataType : 'json',
@@ -43,11 +40,28 @@ $(document).ready(function() {
 					'tradeno' : event.id
 				},
 				success : function(res) {
-					$("#eventdialog").fancybox({
+					eventDialog.find("#TRADENO").html(event.id);
+					eventDialog.find("#title").html(event.title);					
+					eventDialog.find("#start").html(event.start.format('YYYY-MM-DD'));
+					var tbody = eventDialog.find("tbody");
+					var content = "";
+					var i = 1;
+					$(res).each(function() {
+						var self = $(this);	
+						content += "<tr" + (i % 2 == 0 ? "class='success'>" : ">");
+						content += "<td>" + self.attr('sn') + "</td>";
+						content += "<td>" + self.attr('GOODNO') + "</td>";
+						content += "<td>" + self.attr('GOODNAME') + "</td>";
+						content += "<td>" + self.attr('TRADEQTY') + "</td>";
+						content += "</tr>";
+						i++;
+					});
+					tbody.html(content);
+					eventDialog.fancybox({
 						openMethod : 'zoomIn',
 						afterLoad : function() {
 						}
-					}).open();
+					}).click();
 					$("#pclose1").click(function() {
 						$.fancybox.close();
 					});
