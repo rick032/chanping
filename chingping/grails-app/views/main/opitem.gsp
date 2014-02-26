@@ -9,7 +9,7 @@
 		<div class="page-header">
 			<div class="row">
 				<div class="col-lg-8">
-					<h1>訂購單行事曆</h1>
+					<h1>銷貨單行事曆</h1>
 				</div>
 			</div>			
 			<div class="row">
@@ -48,10 +48,9 @@
 							<thead>
 								<tr>
 									<th>#</th>
-									<!-- <th>貨品代號</th> -->
+									<th>貨品代號</th>
 									<th>貨品名稱</th>
 									<th>訂單數量</th>
-									<th>已出貨數量</th>
 								</tr>
 							</thead>
 							<tbody>																
@@ -64,7 +63,7 @@
 	</div>
 	<!-- /container -->
 	<script type='text/javascript'
-		src="${resource(dir:'js/pagejs/main',file:'calendar.js')}"></script>
+		src="${resource(dir:'js/pagejs/main',file:'opitem.js')}"></script>
 
 </body>
 </html>

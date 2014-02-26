@@ -59,7 +59,7 @@
 	<div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
-				<a href="../" class="navbar-brand">Bootswatch</a>
+				<a href="../" class="navbar-brand">釺品</a>
 				<button class="navbar-toggle" type="button" data-toggle="collapse"
 					data-target="#navbar-main">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
@@ -68,15 +68,18 @@
 			</div>
 			<div class="navbar-collapse collapse" id="navbar-main">
 				<ul class="nav navbar-nav">
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#" id="themes">Themes <span
+					<!-- <li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#" id="themes">行事曆 <span
 							class="caret"></span></a>
 						<ul class="dropdown-menu" aria-labelledby="themes">
-							<li><a href="../default/">Default</a></li>
+							<li><a href="${request.contextPath}/main/">訂購單</a></li>
 							<li class="divider"></li>
-						</ul></li>
-					<li><a href="../help/">Help</a></li>
-					<li><a href="http://news.bootswatch.com">Blog</a></li>
+							<li><a href="${request.contextPath}/main/opitem">銷貨單</a></li>							
+						</ul>
+					</li>-->					
+					<li><a href="${request.contextPath}">訂購單</a></li>
+					<li><a href="${request.contextPath}/main/opitem">銷貨單</a></li>
+					<!--  
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#" id="download">Download <span
 							class="caret"></span></a>
@@ -86,14 +89,14 @@
 							<li class="divider"></li>
 							<li><a href="./variables.less">variables.less</a></li>
 							<li><a href="./bootswatch.less">bootswatch.less</a></li>
-						</ul></li>
+						</ul></li>-->
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" target="_blank">Built
+					<!-- <li><a href="#" target="_blank">Built
 							With Bootstrap</a></li>
 					<li><a href="#"
-						target="_blank">WrapBootstrap</a></li>
+						target="_blank">WrapBootstrap</a></li>-->
 				</ul>
 
 			</div>
@@ -104,7 +107,7 @@
 	</section>
 	<hr>
     <div class="footer">
-        <p>&copy; 釺品股份有限公司 </p>
+        <p class="text-center">&copy; 釺品股份有限公司 </p>
     </div>
 
 	<!-- Le javascript

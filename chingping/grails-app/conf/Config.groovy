@@ -1,3 +1,6 @@
+import org.apache.log4j.DailyRollingFileAppender
+import org.apache.log4j.PatternLayout
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -71,10 +74,13 @@ grails.exceptionresolver.params.exclude = ['password']
 
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
-
+def log4jConsoleLogLevel = org.apache.log4j.Level.INFO
+def log4jAppFileLogLevel = org.apache.log4j.Level.INFO
 environments {
 	development {
 		grails.logging.jul.usebridge = true
+		log4jConsoleLogLevel = org.apache.log4j.Level.DEBUG
+		log4jAppFileLogLevel = org.apache.log4j.Level.DEBUG
 	}
 	production {
 		grails.logging.jul.usebridge = false
@@ -84,23 +90,45 @@ environments {
 
 // log4j configuration
 log4j = {
-	// Example of changing the log pattern for the default console appender:
-	//
+	println "Log4j consoleLevel: ${log4jConsoleLogLevel} appFile Level: ${log4jAppFileLogLevel}"
+
+	def logLayoutPattern = new PatternLayout("%d [%t] %X{IP}-%X{empNo}-%X{loginId} %X{URL}  %-5p %c %x - %m%n")
 	appenders {
-		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+		console name: "stdout",
+		threshold: log4jConsoleLogLevel,
+		layout: logLayoutPattern
+
+		appender new DailyRollingFileAppender( name: "appFile",
+		threshold: log4jConsoleLogLevel,
+		file: "logs/echanping.log",
+		datePattern: "'.'yyyy-MM-dd",
+		layout: logLayoutPattern)
 	}
-	info 'tw.com.chanping'
-	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-			'org.codehaus.groovy.grails.web.pages',          // GSP
+	
+	root {
+		debug 'stdout'
+		debug 'appFile'
+	}
+
+	error   'org.codehaus.groovy.grails.web.pages',           // GSP
 			'org.codehaus.groovy.grails.web.sitemesh',       // layouts
 			'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
 			'org.codehaus.groovy.grails.web.mapping',        // URL mapping
 			'org.codehaus.groovy.grails.commons',            // core / classloading
 			'org.codehaus.groovy.grails.plugins',            // plugins
 			'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+			'org.codehaus.groovy.grails.web.servlet',        // controllers
+			'org.codehaus.groovy.grails.web.binding',
 			'org.springframework',
 			'org.hibernate',
-			'net.sf.ehcache.hibernate'
+			'net.sf.ehcache.hibernate',
+			'org.grails.plugin',
+			'org.apache',
+			'grails.app.taglib',
+			'grails.app.resourceMappers'
+
+	debug   'tw.com.chanping',
+		    'grails.app.controller'
 }
 def baseUrl = "http://localhost:8080/chingping"
 oauth {
@@ -121,4 +149,3 @@ oauth {
 	receiveTimeout = 5000
 }
 grails.google.api.url = "https://www.googleapis.com/oauth2/v1/userinfo"
-DBF.url = "F:\\WorkArea\\others\\Chingping\\DATA\\"

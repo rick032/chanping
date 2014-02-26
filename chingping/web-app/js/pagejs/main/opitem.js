@@ -15,7 +15,7 @@ $(document).ready(function() {
 		},
 		events : function(start, end, timezone, callback) {
 			$.ajax({
-				url : contextRoot + "/main/getSitemEvents",
+				url : contextRoot + "/main/getOpitemEvents",
 				dataType : 'json',
 				data : {
 					start : start.format('YYYY,MM,DD'),
@@ -37,7 +37,7 @@ $(document).ready(function() {
 		},
 		eventClick : function(event) {
 			$.ajax({
-				url : contextRoot + "/main/getSitemEvent",
+				url : contextRoot + "/main/getOpitemEvent",
 				type : "POST",
 				data : {
 					'tradeno' : event.id
@@ -54,9 +54,8 @@ $(document).ready(function() {
 						content += "<tr" + (i % 2 == 0 ? " class='success'>" : ">");
 						content += "<td>" + self.attr('sn') + "</td>";
 						content += "<td>" + self.attr('GOODNO') + "</td>";
-						//content += "<td>" + self.attr('GOODNAME') + "</td>";
+						content += "<td>" + self.attr('GOODNAME') + "</td>";
 						content += "<td>" + self.attr('TRADEQTY') + "</td>";
-						content += "<td>" + self.attr('SHIPQTY') + "</td>";
 						content += "</tr>";
 						i++;
 					});

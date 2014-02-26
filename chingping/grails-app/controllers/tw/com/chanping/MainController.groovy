@@ -30,6 +30,7 @@ class MainController {
 		 sql.close()*/
 		return [opitems:responList]
 	}
+	def opitem() {}
 
 	def google() {
 		Token googleAccessToken = (Token) session[oauthService.findSessionKeyForAccessToken('google')]
@@ -52,16 +53,91 @@ class MainController {
 
 	}
 	def dateFormatForDBF = new SimpleDateFormat("yyyy,MM,dd")
-	def getEvents(){
+	
+	/**
+	 * 訂購單事件
+	 * @return
+	 */
+	def getSitemEvents(){
 		def start = params.start
 		def end = params.end
+		println end
 		if(!end){
 			//get last day of month
 			Calendar calendar = Calendar.getInstance()
 			calendar.setTime(dateFormatForDBF.parse(start))
 			calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
 			end = dateFormatForDBF.format(calendar.getTime())
-			println end
+		}
+		def sql = new Sql(dataSource)
+		//sql.eachRow("SELECT * from Goods c where c.ctmno='A-001'") { c ->
+		def sqlQuery = "select DISTINCT c.CTMNAME,s.SALCNO,s.SHIPDATE from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
+				"where SHIPDATE between datetime("+start+") and datetime("+end+")"
+		println sqlQuery
+		def rows = sql.rows(sqlQuery)
+
+		def resList = []
+		rows.each { c ->
+			def res = [:]
+			res['id'] = c.SALCNO?.trim()
+			res['title'] = c.ctmname?.trim()
+			res['start'] =c.SHIPDATE
+			sqlQuery = "select GOODNO,TRADEQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
+				"where s.SALCNO='"+ res['id'] +"'";
+			println sqlQuery
+			def rows2 = sql.rows(sqlQuery)
+			res['desc'] = ""
+			rows2.each { row ->
+				res['desc'] += row.GOODNO?.trim()+" 數量:"+row.TRADEQTY.toInteger()+"\n"
+			}
+			resList.add res
+		}
+		sql.close()
+
+		log.debug "end~~~~~~~~~"
+
+		render resList as JSON
+	}
+	
+	/**
+	 * 訂購單事件
+	 * @return
+	 */
+	def getSitemEvent() {
+		def tradeno = params.tradeno
+		def responList = []
+		if(tradeno){
+			int i = 1
+			def sql = new Sql(dataSource)
+			def rows = sql.rows("select c.CTMNAME,c.TEL1,c.TEL2,s.SALCNO,s.CTMNO,s.SHIPDATE,s.GOODNO,TRADEQTY,SHIPQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
+					"where s.SALCNO='"+ tradeno +"'")
+			rows.each { c ->
+				def res = [:]
+				res['sn'] = i++
+				res['TRADEQTY'] = c.TRADEQTY
+				res['SHIPQTY'] = c.SHIPQTY
+				res['GOODNO'] = c.GOODNO?.trim()
+				responList.add res
+			}
+			sql.close()
+		}
+		render responList as JSON
+	}
+	
+	/**
+	 * 銷貨單事件
+	 * @return
+	 */
+	def getOpitemEvents(){
+		def start = params.start
+		def end = params.end
+		println end
+		if(!end){
+			//get last day of month
+			Calendar calendar = Calendar.getInstance()
+			calendar.setTime(dateFormatForDBF.parse(start))
+			calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));
+			end = dateFormatForDBF.format(calendar.getTime())			
 		}
 		def sql = new Sql(dataSource)
 		//sql.eachRow("SELECT * from Goods c where c.ctmno='A-001'") { c ->
@@ -77,6 +153,12 @@ class MainController {
 			res['id'] = c.TRADENO?.trim()
 			res['title'] = c.ctmname?.trim()
 			res['start'] =c.TRADEDATE
+			def rows2 = sql.rows("select o.GOODNO,GOODNAME,TRADEQTY from opitem o LEFT JOIN ctm c on o.ctmno=c.ctmno LEFT JOIN GOODS g ON o.goodno=g.goodno "+
+				"where o.TRADENO='"+ res['id'] +"'")
+			res['desc'] = ""
+			rows2.each { row ->				
+				res['desc'] += row.GOODNAME?.trim()+" 數量:"+row.TRADEQTY.toInteger()+"\n"				
+			}			
 			resList.add res
 		}
 		sql.close()
@@ -86,7 +168,11 @@ class MainController {
 		render resList as JSON
 	}
 
-	def getEvent() {
+	/**
+	 * 銷貨單事件
+	 * @return
+	 */
+	def getOpitemEvent() {
 		def tradeno = params.tradeno
 		def responList = []
 		if(tradeno){
