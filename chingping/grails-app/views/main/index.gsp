@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>首頁</title>
-<meta name="layout" content="main" />
+<meta name="layout" content="inner" />
 </head>
 <body>
 	<div class="container">
@@ -22,33 +22,33 @@
 		</div>
 		<!-- dialog -->
 		<div class="hide">
-			<div id="eventdialog" class="dialog" style="width: 600px;">
+			<div id="eventdialog" class="dialog" style="width: 700px;">
 				<div class="control-group">
-					<label class="col-lg-3 control-label" for="TRADENO">訂單單號：</label>
-					<div class="col-lg-9">
+					<label class="col-xs-2 col-md-2 control-label" for="TRADENO">訂單單號：</label>
+					<div class="col-xs-9 col-md-9">
 						<label id="TRADENO"></label>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="col-lg-3 control-label" for="title">客戶名稱：</label>
-					<div class="col-lg-9">
+					<label class="col-xs-2 col-md-2 control-label" for="title">客戶名稱：</label>
+					<div class="col-xs-9 col-md-9">
 						<label id="title"></label>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="col-lg-3 control-label" for="start">預定交期：</label>
-					<div class="col-lg-9">
+					<label class="col-xs-2 col-md-2 control-label" for="start">預定交期：</label>
+					<div class="col-xs-9 col-md-9">
 						<label id="start"></label>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="col-lg-3 control-label" for="goods">交付貨品：</label>
+					<label class="col-xs-2 col-md-2 control-label" for="goods">交付貨品：</label>
 					<div class="bs-example table-responsive">
 						<table class="table table-striped table-hover ">
 							<thead>
 								<tr>
 									<th>#</th>
-									<!-- <th>貨品代號</th> -->
+									<th>貨品代號</th>
 									<th>貨品名稱</th>
 									<th>訂單數量</th>
 									<th>已出貨數量</th>

@@ -13,21 +13,6 @@ class MainController {
 	def dataSource
 	def index() {
 		def responList = []
-		/*
-		 def sql = new Sql(dataSource)
-		 //sql.eachRow("SELECT * from Goods c where c.ctmno='A-001'") { c ->
-		 def rows = sql.rows("SELECT * from Opitem o ")
-		 int i = 1
-		 rows.each { c ->
-		 def res = [:]
-		 if(i > 5 ) return
-		 res['sn'] = i++
-		 res['tradeno'] = c.tradeno
-		 res['tradedate'] = c.tradedate
-		 res['goodno'] = c.goodno
-		 responList.add(res)
-		 }
-		 sql.close()*/
 		return [opitems:responList]
 	}
 	def opitem() {}
@@ -82,13 +67,17 @@ class MainController {
 			res['id'] = c.SALCNO?.trim()
 			res['title'] = c.ctmname?.trim()
 			res['start'] =c.SHIPDATE
-			sqlQuery = "select GOODNO,TRADEQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
+			sqlQuery = "select GOODNO,TRADEQTY,SHIPQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
 				"where s.SALCNO='"+ res['id'] +"'";
 			println sqlQuery
 			def rows2 = sql.rows(sqlQuery)
 			res['desc'] = ""
+			res['isCompleted'] = "Y"
 			rows2.each { row ->
 				res['desc'] += row.GOODNO?.trim()+" 數量:"+row.TRADEQTY.toInteger()+"\n"
+				if(row.TRADEQTY!=row.SHIPQTY){
+					res['isCompleted'] = "N"
+				}
 			}
 			resList.add res
 		}
@@ -109,7 +98,7 @@ class MainController {
 		if(tradeno){
 			int i = 1
 			def sql = new Sql(dataSource)
-			def rows = sql.rows("select c.CTMNAME,c.TEL1,c.TEL2,s.SALCNO,s.CTMNO,s.SHIPDATE,s.GOODNO,TRADEQTY,SHIPQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno "+
+			def rows = sql.rows("select c.CTMNAME,c.TEL1,c.TEL2,s.SALCNO,s.CTMNO,s.SHIPDATE,s.GOODNO,g.GOODNAME,TRADEQTY,SHIPQTY from sitem s LEFT JOIN ctm c on s.ctmno=c.ctmno LEFT JOIN GOODS g ON s.goodno=g.goodno "+
 					"where s.SALCNO='"+ tradeno +"'")
 			rows.each { c ->
 				def res = [:]
@@ -117,6 +106,7 @@ class MainController {
 				res['TRADEQTY'] = c.TRADEQTY
 				res['SHIPQTY'] = c.SHIPQTY
 				res['GOODNO'] = c.GOODNO?.trim()
+				res['GOODNAME'] = c.GOODNAME?.trim()
 				responList.add res
 			}
 			sql.close()
