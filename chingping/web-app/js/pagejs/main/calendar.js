@@ -10,9 +10,9 @@ $(document).ready(function() {
 				$('#calendar').fullCalendar('changeView', view);
 			}
 			if (ww <= 768) {
-				$('.fc-header-right .fc-button').hide();
+				$('.fc-header-right,.fc-button').hide();
 			} else {
-				$('.fc-header-right .fc-button').show();
+				$('.fc-header-right,.fc-button').show();
 			}
 		},
 		header : {
@@ -25,6 +25,7 @@ $(document).ready(function() {
 		lazyFetching : false,
 		viewRender : function(view, element) {
 			isDayView = view.name == 'basicDay';
+			$('.fc-sat, .fc-sun').addClass('text-danger');
 		},
 		events : function(start, end, timezone, callback) {
 			$.ajax({

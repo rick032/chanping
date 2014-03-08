@@ -100,7 +100,7 @@ log4j = {
 
 		appender new DailyRollingFileAppender( name: "appFile",
 		threshold: log4jConsoleLogLevel,
-		file: "logs/echanping.log",
+		file: "logs/chanping.log",
 		datePattern: "'.'yyyy-MM-dd",
 		layout: logLayoutPattern)
 	}

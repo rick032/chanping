@@ -75,7 +75,7 @@ class MainController {
 			res['isCompleted'] = "Y"
 			rows2.each { row ->
 				res['desc'] += row.GOODNO?.trim()+" 數量:"+row.TRADEQTY.toInteger()+"\n"
-				if(row.TRADEQTY!=row.SHIPQTY){
+				if(row.TRADEQTY>row.SHIPQTY){
 					res['isCompleted'] = "N"
 				}
 			}

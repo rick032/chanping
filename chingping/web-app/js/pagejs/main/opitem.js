@@ -12,6 +12,7 @@ $(document).ready(function() {
 		lazyFetching : false,
 		viewRender : function(view, element) {			
 			isDayView = view.name == 'basicDay';
+			$('.fc-sat, .fc-sun').addClass('text-danger');
 		},
 		events : function(start, end, timezone, callback) {
 			$.ajax({
